@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashionkart - Online Shopping</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-tshirt"></i>
+                <span>Fashionkart</span>
+                <small>Explore <span class="plus">Plus</span> <i class="fas fa-star"></i></small>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search for products, brands and more">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="header-buttons">
+                <button class="btn-login" onclick="showLoginModal()">
+                    <i class="fas fa-user"></i> Login
+                </button>
+                <button class="btn-header" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Cart</span>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="btn-header" onclick="toggleWishlist()">
+                    <i class="fas fa-heart"></i>
+                    <span>Wishlist</span>
+                    <span class="wishlist-count" id="wishlistCount">0</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Categories Nav -->
+        <nav class="categories-nav">
+            <a href="#" class="category-link active" data-category="">All</a>
+            <a href="#" class="category-link" data-category="Electronics">Electronics</a>
+            <a href="#" class="category-link" data-category="Clothing">Fashion</a>
+            <a href="#" class="category-link" data-category="Books">Books</a>
+            <a href="#" class="category-link" data-category="Home">Home</a>
+            <a href="#" class="category-link" data-category="Appliances">Appliances</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Banner -->
+        <section class="hero-banner">
+            <div class="banner-slide">
+                <h2>Big Billion Days Sale</h2>
+                <p>Up to 80% Off on Electronics</p>
+                <button class="btn-shop">Shop Now</button>
+            </div>
+        </section>
+
+        <!-- Product Catalog -->
+        <section class="product-section">
+            <div class="section-header">
+                <h2>Best Deals on Electronics</h2>
+                <button class="btn-view-all">View All</button>
+            </div>
+            <div id="productGrid" class="product-grid">
+                <!-- Products will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Deals Section -->
+        <section class="deals-section">
+            <div class="deals-header">
+                <h2><i class="fas fa-bolt"></i> Deals of the Day</h2>
+                <div class="timer">
+                    <span id="hours">12</span>:
+                    <span id="minutes">34</span>:
+                    <span id="seconds">56</span>
+                </div>
+            </div>
+            <div id="dealsGrid" class="deals-grid">
+                <!-- Deals will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="sidebar hidden">
+        <div class="sidebar-header">
+            <h3>Your Cart</h3>
+            <button onclick="toggleCart()" class="close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cartItems" class="cart-items">
+            <!-- Cart items will be loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn-checkout" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Wishlist Sidebar -->
+    <div id="wishlistSidebar" class="sidebar hidden">
+        <div class="sidebar-header">
+            <h3>Your Wishlist</h3>
+            <button onclick="toggleWishlist()" class="close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="wishlistItems" class="wishlist-items">
+            <!-- Wishlist items will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="modal hidden">
+        <div class="modal-content">
+            <button onclick="closeProductModal()" class="close-modal"><i class="fas fa-times"></i></button>
+            <div class="product-modal-body">
+                <div class="product-modal-images">
+                    <img id="modalImage" src="" alt="Product">
+                </div>
+                <div class="product-modal-details">
+                    <h2 id="modalTitle">Product Name</h2>
+                    <div class="modal-rating">
+                        <span id="modalRating">4.5</span>
+                        <i class="fas fa-star"></i>
+                        <span id="modalReviews">(2341 reviews)</span>
+                    </div>
+                    <div class="modal-price">
+                        <span id="modalPrice">$79.99</span>
+                        <span id="modalOriginalPrice">$129.99</span>
+                        <span id="modalDiscount" class="discount-badge">38% off</span>
+                    </div>
+                    <div class="offers-section">
+                        <h3>Available Offers</h3>
+                        <ul>
+                            <li><i class="fas fa-tag"></i> Bank Offer: 10% off on HDFC Credit Cards</li>
+                            <li><i class="fas fa-tag"></i> Special Price: Get extra 5% off (price inclusive of discount)</li>
+                        </ul>
+                    </div>
+                    <div class="delivery-section">
+                        <h3>Delivery</h3>
+                        <p><i class="fas fa-truck"></i> Free Delivery</p>
+                        <p><i class="fas fa-undo"></i> 7 Days Return Policy</p>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn-add-cart" onclick="addToCartFromModal()">
+                            <i class="fas fa-shopping-cart"></i> ADD TO CART
+                        </button>
+                        <button class="btn-buy-now" onclick="buyNow()">
+                            <i class="fas fa-bolt"></i> BUY NOW
+                        </button>
+                        <button class="btn-wishlist" onclick="toggleWishlistFromModal()">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reviews Section -->
+            <div class="reviews-section">
+                <h3>Reviews</h3>
+                <div id="reviewsList" class="reviews-list">
+                    <!-- Reviews will be loaded here -->
+                </div>
+                <div class="add-review">
+                    <h4>Add Your Review</h4>
+                    <div class="rating-input">
+                        <label>Rating:</label>
+                        <select id="reviewRating">
+                            <option value="5">5 - Excellent</option>
+                            <option value="4">4 - Good</option>
+                            <option value="3">3 - Average</option>
+                            <option value="2">2 - Poor</option>
+                            <option value="1">1 - Very Poor</option>
+                        </select>
+                    </div>
+                    <div class="review-input">
+                        <label>Your Name:</label>
+                        <input type="text" id="reviewName" placeholder="Enter your name">
+                    </div>
+                    <div class="review-input">
+                        <label>Comment:</label>
+                        <textarea id="reviewComment" rows="3" placeholder="Write your review"></textarea>
+                    </div>
+                    <button class="btn-submit-review" onclick="submitReview()">Submit Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal hidden">
+        <div class="login-content">
+            <button onclick="closeLoginModal()" class="close-modal"><i class="fas fa-times"></i></button>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="btn-login-submit">Login</button>
+            </form>
+            <p>New to Fashionkart? <a href="#">Create an account</a></p>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay hidden" onclick="closeAllModals()"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About</h4>
+                <a href="#">Contact Us</a>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+            </div>
+            <div class="footer-section">
+                <h4>Help</h4>
+                <a href="#">Payments</a>
+                <a href="#">Shipping</a>
+                <a href="#">Returns</a>
+            </div>
+            <div class="footer-section">
+                <h4>Policy</h4>
+                <a href="#">Return Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div class="footer-section">
+                <h4>Social</h4>
+                <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Fashionkart. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
