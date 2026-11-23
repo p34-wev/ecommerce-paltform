@@ -2,6 +2,10 @@
 
 A full-stack e-commerce platform with product catalog management, built with Python (Flask) backend and HTML/CSS/JavaScript frontend.
 
+## 🌐 Live Deployment
+
+**View the live application:** https://playful-pie-376855.netlify.app
+
 ## Features
 
 - Product catalog with grid view
@@ -19,6 +23,7 @@ A full-stack e-commerce platform with product catalog management, built with Pyt
 - **Database**: SQLite
 - **Frontend**: HTML, CSS, JavaScript
 - **API**: RESTful API with CORS support
+- **Hosting**: Netlify (Static Frontend)
 
 ## Installation
 
