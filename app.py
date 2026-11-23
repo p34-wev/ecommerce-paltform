@@ -2,8 +2,13 @@ from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 import sqlite3
 import os
-import psycopg2
-from psycopg2.extras import RealDictCursor
+
+try:
+    import psycopg2
+    from psycopg2.extras import RealDictCursor
+    POSTGRES_AVAILABLE = True
+except ImportError:
+    POSTGRES_AVAILABLE = False
 
 app = Flask(__name__)
 CORS(app)
@@ -14,7 +19,7 @@ if DATABASE_URL and DATABASE_URL.startswith('postgres://'):
     DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql://', 1)
 
 def get_db_connection():
-    if DATABASE_URL:
+    if DATABASE_URL and POSTGRES_AVAILABLE:
         # PostgreSQL for production
         conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
         return conn
@@ -27,8 +32,8 @@ def get_db_connection():
 def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
-    
-    if DATABASE_URL:
+
+    if DATABASE_URL and POSTGRES_AVAILABLE:
         # PostgreSQL syntax
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS products (
@@ -45,7 +50,7 @@ def init_db():
                 discount INTEGER DEFAULT 0
             )
         ''')
-        
+
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS reviews (
                 id SERIAL PRIMARY KEY,
@@ -74,7 +79,7 @@ def init_db():
                 discount INTEGER DEFAULT 0
             )
         ''')
-        
+
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS reviews (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -86,7 +91,7 @@ def init_db():
                 FOREIGN KEY (product_id) REFERENCES products (id)
             )
         ''')
-    
+
     conn.commit()
     conn.close()
 
@@ -95,7 +100,7 @@ def get_products():
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    if DATABASE_URL:
+    if DATABASE_URL and POSTGRES_AVAILABLE:
         cursor.execute('SELECT * FROM products')
         products = cursor.fetchall()
     else:
@@ -126,7 +131,7 @@ def get_product(product_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    if DATABASE_URL:
+    if DATABASE_URL and POSTGRES_AVAILABLE:
         cursor.execute('SELECT * FROM products WHERE id = %s', (product_id,))
         product = cursor.fetchone()
     else:
@@ -161,7 +166,7 @@ def add_product():
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    if DATABASE_URL:
+    if DATABASE_URL and POSTGRES_AVAILABLE:
         # PostgreSQL
         cursor.execute('''
             INSERT INTO products (name, description, price, image_url, category, stock)
@@ -203,9 +208,9 @@ def update_product(product_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    if DATABASE_URL:
+    if DATABASE_URL and POSTGRES_AVAILABLE:
         cursor.execute('''
-            UPDATE products 
+            UPDATE products
             SET name = %s, description = %s, price = %s, image_url = %s, category = %s, stock = %s
             WHERE id = %s
         ''', (
@@ -219,7 +224,7 @@ def update_product(product_id):
         ))
     else:
         cursor.execute('''
-            UPDATE products 
+            UPDATE products
             SET name = ?, description = ?, price = ?, image_url = ?, category = ?, stock = ?
             WHERE id = ?
         ''', (
@@ -242,7 +247,7 @@ def delete_product(product_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    if DATABASE_URL:
+    if DATABASE_URL and POSTGRES_AVAILABLE:
         cursor.execute('DELETE FROM products WHERE id = %s', (product_id,))
     else:
         cursor.execute('DELETE FROM products WHERE id = ?', (product_id,))
@@ -257,7 +262,7 @@ def get_product_reviews(product_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    if DATABASE_URL:
+    if DATABASE_URL and POSTGRES_AVAILABLE:
         cursor.execute('SELECT * FROM reviews WHERE product_id = %s ORDER BY created_at DESC', (product_id,))
         reviews = cursor.fetchall()
     else:
@@ -288,7 +293,7 @@ def add_review(product_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    if DATABASE_URL:
+    if DATABASE_URL and POSTGRES_AVAILABLE:
         cursor.execute('''
             INSERT INTO reviews (product_id, user_name, rating, comment)
             VALUES (%s, %s, %s, %s)
@@ -298,10 +303,10 @@ def add_review(product_id):
             data['rating'],
             data.get('comment', '')
         ))
-        
+
         # Update product rating
         cursor.execute('''
-            UPDATE products 
+            UPDATE products
             SET rating = (
                 SELECT AVG(rating) FROM reviews WHERE product_id = %s
             ),
@@ -320,10 +325,10 @@ def add_review(product_id):
             data['rating'],
             data.get('comment', '')
         ))
-        
+
         # Update product rating
         cursor.execute('''
-            UPDATE products 
+            UPDATE products
             SET rating = (
                 SELECT AVG(rating) FROM reviews WHERE product_id = ?
             ),
