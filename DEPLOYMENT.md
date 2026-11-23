@@ -1,6 +1,74 @@
 # Fashionkart Deployment Guide
 
-## Option 1: Deploy to Replit (Free - Recommended)
+## Option 1: Deploy to Glitch (Completely Free - Recommended)
+
+### Step 1: Create Glitch Account
+
+1. Go to [glitch.com](https://glitch.com)
+2. Sign up for free account (no credit card needed)
+
+### Step 2: Create New Project
+
+1. Click "New Project"
+2. Select "glitch-hello-flask" template
+3. Or start from scratch
+
+### Step 3: Upload Files
+
+Either:
+- **Option A**: Drag and drop all project files to Glitch
+- **Option B**: Import from GitHub
+  - Click "Import from GitHub"
+  - Enter: `https://github.com/p34-wev/ecommerce-paltform.git`
+
+### Step 4: Update requirements.txt
+
+Make sure `requirements.txt` has:
+```
+Flask==3.0.0
+flask-cors==4.0.0
+```
+
+Remove `psycopg2-binary` - we'll use SQLite
+
+### Step 5: Configure App
+
+Edit `.env` file (or create it):
+```
+PORT=3000
+```
+
+### Step 6: Seed Database
+
+In the Glitch Console:
+```bash
+python seed.py
+```
+
+### Step 7: Run the App
+
+1. Glitch will automatically detect the Flask app
+2. Click "Show" button to see your app
+3. Glitch provides a public URL automatically
+
+### Access Your App
+
+Glitch will give you a URL like:
+`https://fashionkart.glitch.me`
+
+### Advantages of Glitch
+- ✅ Completely free forever
+- ✅ No credit card needed
+- ✅ SQLite works out of the box
+- ✅ No database setup needed
+- ✅ Easy to use
+- ✅ Built-in code editor
+- ✅ Auto-deploys on save
+- ✅ Live collaboration
+
+---
+
+## Option 2: Deploy to Replit (Free - Limited)
 
 ### Step 1: Create Replit Account
 
@@ -70,7 +138,7 @@ Replit will give you a URL like:
 
 ---
 
-## Option 2: Deploy to Render (Paid - No Free Tier)
+## Option 3: Deploy to Render (Paid - No Free Tier)
 
 ### Step 1: Push to GitHub
 
@@ -128,7 +196,7 @@ After deployment, Render will give you a URL like:
 
 ---
 
-## Option 3: Deploy to Railway (Free Tier)
+## Option 4: Deploy to Railway (Free Tier - Limited)
 
 ### Step 1: Install Railway CLI
 
@@ -172,7 +240,7 @@ python seed_production.py
 
 ---
 
-## Option 4: Deploy to PythonAnywhere (Free Beginner Account)
+## Option 5: Deploy to PythonAnywhere (Free Beginner Account)
 
 ### Step 1: Create Account
 
@@ -218,7 +286,7 @@ Click "Reload" button in the Web tab
 
 ---
 
-## Option 5: Deploy to Fly.io (Free Credits)
+## Option 6: Deploy to Fly.io (Free Credits - Limited)
 
 ### Step 1: Install Fly CLI
 
@@ -263,7 +331,7 @@ fly deploy
 
 ---
 
-## Option 6: Deploy to Koyeb (Free Tier)
+## Option 7: Deploy to Koyeb (Free Tier - Limited)
 
 ### Step 1: Create Koyeb Account
 
@@ -316,7 +384,7 @@ Koyeb will give you a URL like:
 
 ---
 
-## Option 7: Heroku (Paid - No Free Tier)
+## Option 8: Heroku (Paid - No Free Tier)
 
 ### Step 1: Install Heroku CLI
 
@@ -362,6 +430,12 @@ Then open http://localhost:5000
 ---
 
 ## Troubleshooting
+
+### Glitch
+1. Check that all files are uploaded
+2. Ensure PORT is set to 3000 in .env
+3. Run seed.py to populate database
+4. Check console for errors
 
 ### Replit
 1. Check that all files are uploaded
