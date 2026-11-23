@@ -263,7 +263,60 @@ fly deploy
 
 ---
 
-## Option 6: Heroku (Paid - No Free Tier)
+## Option 6: Deploy to Koyeb (Free Tier)
+
+### Step 1: Create Koyeb Account
+
+1. Go to [koyeb.com](https://www.koyeb.com)
+2. Sign up for free account
+
+### Step 2: Install Koyeb CLI
+
+```bash
+npm install -g @koyeb/cli
+```
+
+### Step 3: Login
+
+```bash
+koyeb login
+```
+
+### Step 4: Deploy from GitHub
+
+```bash
+koyeb init fashionkart
+koyeb app create fashionkart --git https://github.com/p34-wev/ecommerce-paltform.git --branch main
+```
+
+### Step 5: Configure Environment
+
+In Koyeb dashboard:
+1. Go to your app settings
+2. Add environment variable:
+   - Key: `PORT`
+   - Value: `5000`
+3. Add PostgreSQL database (optional - can use SQLite)
+
+### Step 6: Deploy
+
+The app will automatically deploy. Koyeb will provide a public URL.
+
+### Access Your App
+
+Koyeb will give you a URL like:
+`https://fashionkart.koyeb.app`
+
+### Advantages of Koyeb
+- ✅ Free tier available
+- ✅ Global edge network
+- ✅ Automatic SSL
+- ✅ GitHub integration
+- ✅ SQLite support
+
+---
+
+## Option 7: Heroku (Paid - No Free Tier)
 
 ### Step 1: Install Heroku CLI
 
@@ -329,3 +382,8 @@ Then open http://localhost:5000
 1. Check: `fly logs`
 2. Verify secrets: `fly secrets list`
 3. Check health status: `fly status`
+
+### Koyeb
+1. Check deployment logs in Koyeb dashboard
+2. Verify environment variables are set
+3. Ensure PORT is set to 5000
